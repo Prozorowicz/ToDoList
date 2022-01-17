@@ -1,0 +1,1 @@
+insert into LANGUAGES (WELCOME_MSG, CODE, FLAG) values ('Bonjour','fr','france-flag-icon-16.png');

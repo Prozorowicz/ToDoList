@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ULTIMATE TODO LIST</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css"
+          integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
+</head>
+<body>
+<main style="width:50%; margin: 0 auto">
+    <div id="welcome" style="text-align: center">
+        <h1>Introduce yourself</h1>
+    </div>
+    <form id="welcomeForm" class="pure-form pure-g pure-form-aligned">
+        <input type="text" name="name" class="pure-input-rounded pure-u-1" placeholder="name"/>
+        <fieldset id="langs" class="pure-u-1 pure-control-group">Loading...</fieldset>
+        <button id="btn" class="pure-button pure-button-primary pure-u-1">Submit</button>
+    </form>
+    <form id="todoForm" class="pure-form" style="display: none; text-align: center">
+        <fieldset>
+            <input id="todoText" class="pure-input-rounded pure-input-2-3" placeholder="new TODO">
+            <button id="addTodo" class="pure-button pure-button-primary">+</button>
+        </fieldset>
+        <fieldset id="allTodos"></fieldset>
+    </form>
+</main>
+<script>
+    const API_URL = 'http://localhost:8080/api';
+
+    fetch(`${API_URL}/langs`)
+        .then(response => response.json())
+        .then((langArr) => { 
+            const checkboxes = langArr.map(l => `
+                <label class="pure-radio">
+                     <input type="radio"  name="lang" value="${l.id}" />
+                     <img src="${l.flag}" alt="${l.code}" />
+                 </label>
+            `).join('\n');
+            document.getElementById('langs').innerHTML = checkboxes;
+        });
+
+    const div = document.getElementById('welcome');
+    const form = document.getElementById('welcomeForm');
+
+    document.getElementById('btn').addEventListener('click', (event) =>{
+        event.preventDefault();
+        const formObj = {
+            name: form.elements.name.value,
+            lang: form.elements.lang.value
+        };
+        fetch(`${API_URL}?${new URLSearchParams(formObj)}`)
+        .then(response => response.text())
+        .then((text)=>{
+            div.innerHTML = `
+            <h1>${text}</h1>
+            `;
+        });
+    });
+</script>
+</body>
+</html>
