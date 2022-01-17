@@ -3,6 +3,7 @@ package io.github.prozorowicz.hello;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,7 +34,13 @@ public class HelloServlet extends HttpServlet {
         logger.info("Got request with parameters " + req.getParameterMap());
         var name = req.getParameter(NAME_PARAM);
         var lang = req.getParameter(LANG_PARAM);
-        resp.getWriter().write(service.prepareGreeting(name,lang));
+        Integer langId = null;
+        try {
+            langId = Integer.valueOf(lang);
 
+        } catch (NumberFormatException e) {
+            logger.warn("Non-numeric language id used: " + lang);
+        }
+        resp.getWriter().write(service.prepareGreeting(name,langId));
     }
 }
