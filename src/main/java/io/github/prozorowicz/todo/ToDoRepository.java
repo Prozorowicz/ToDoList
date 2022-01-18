@@ -4,7 +4,7 @@ import io.github.prozorowicz.HibernateUtil;
 
 import java.util.List;
 
-public class ToDoRepository {
+    class ToDoRepository {
     List<ToDo> findAll(){
         var session = HibernateUtil.getSessionFactory().openSession();
         var transaction = session.beginTransaction();
@@ -15,7 +15,7 @@ public class ToDoRepository {
         session.close();
         return result;
     }
-        public ToDo toggleTodo(Integer id) {
+        ToDo toggleTodo(Integer id) {
         var session = HibernateUtil.getSessionFactory().openSession();
         var transaction = session.beginTransaction();
         var result = session.get(ToDo.class,id);
@@ -23,5 +23,13 @@ public class ToDoRepository {
         transaction.commit();
         session.close();
         return result;
+    }
+        ToDo addTodo(ToDo newTodo) {
+        var session = HibernateUtil.getSessionFactory().openSession();
+        var transaction = session.beginTransaction();
+        session.persist(newTodo);
+        transaction.commit();
+        session.close();
+        return newTodo;
     }
 }

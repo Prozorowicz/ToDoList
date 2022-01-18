@@ -15,7 +15,6 @@ import java.io.IOException;
 @WebServlet(name = "ToDo", urlPatterns = {"/api/todos/*"})
 public class ToDoServlet extends HttpServlet {
     private final Logger logger = LoggerFactory.getLogger(ToDoServlet.class);
-
     private ToDoRepository repository;
     private ObjectMapper mapper;
     /**
@@ -47,6 +46,12 @@ public class ToDoServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             logger.warn("Non-numeric ToDo id used: " + toDoId);
         }
-
+    }
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        var toDo = mapper.readValue(req.getInputStream(),ToDo.class);
+        logger.info("Got request with new Todo: " + toDo.getTEXT());
+        resp.setContentType("application/json;charset=UTF-8");
+        mapper.writeValue(resp.getOutputStream(), repository.addTodo(toDo));
     }
 }

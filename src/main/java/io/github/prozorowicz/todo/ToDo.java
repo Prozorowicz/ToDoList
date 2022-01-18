@@ -15,7 +15,7 @@ class ToDo {
     @GenericGenerator(name = "inc", strategy = "increment")
     private Integer ID;
     private String TEXT;
-    private Boolean DONE;
+    private boolean DONE;
 
     /**
      * used by Hibernate.
@@ -40,11 +40,11 @@ class ToDo {
         this.TEXT = TEXT;
     }
 
-    public Boolean getDONE() {
+    public boolean getDONE() {
         return DONE;
     }
 
-    public void setDONE(Boolean DONE) {
+    public void setDONE(boolean DONE) {
         this.DONE = DONE;
     }
 }
